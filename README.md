@@ -14,5 +14,7 @@ Before you start with your first line of code, you need to do these things first
 Download one Python file or clone the entire Git repo. Change the hard-coded IP address in the .py files. And execute the file.
 
 ## Troubleshooting 
+
 1. file '/home/nao/mp3/xxxxxxxxxx.mp3' not found
+
 Sometimes I used locally generated MP3 files to replace the default TTS engine. Here, you can feel free to replace those MP3 files on your own.
