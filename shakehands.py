@@ -9,6 +9,8 @@ Please replace these things first:
 2. The hard-coded MP3 file names (or you manually upload the MP3 files with Nao's built-in FTP server.  
 '''
 
+__author__ = 'x1ang.li'
+
 import time
 import argparse
 from naoqi import ALProxy, ALBroker, ALModule
@@ -22,7 +24,7 @@ class Kehaola(ALModule):
         self._port = port
 
         tts = ALProxy('ALTextToSpeech', ip, port)
-        tts.setLanguage('Chinese')
+        tts.setLanguage('English')
         self._tts = tts
 
         aup = ALProxy('ALAudioPlayer', ip, port)
@@ -32,21 +34,26 @@ class Kehaola(ALModule):
         self.sub_feetbumper()
         self.sub_handshake()
         self.sub_head()
+        self.sub_facerec()
 
     def unsub_all(self):
         self.unsub_feetbumper()
         self.unsub_handshake()
         self.unsub_head()
+        self.unsub_facerec()
 
     def sub_head(self):
-        global memory
         memory.subscribeToEvent('FrontTactilTouched', self._handle, 'onHeadTouched' )
         memory.subscribeToEvent('RearTactilTouched', self._handle, 'onHeadTouched' )
 
     def unsub_head(self):
-        global memory
         memory.unsubscribeToEvent('FrontTactilTouched', self._handle)
         memory.unsubscribeToEvent('RearTactilTouched', self._handle)
+
+    def onHeadTouched(self, *_args):
+        self.unsub_head()
+        self._aup.playFile('/home/nao/mp3/kehaola.mp3')
+        self.sub_head()
 
     def sub_feetbumper(self):
         memory.subscribeToEvent('LeftBumperPressed', self._handle, 'onBumperPressed')
@@ -55,6 +62,11 @@ class Kehaola(ALModule):
     def unsub_feetbumper(self):
         memory.unsubscribeToEvent('LeftBumperPressed', self._handle)
         memory.unsubscribeToEvent('RightBumperPressed', self._handle)
+
+    def onBumperPressed(self, *_args):
+        self.unsub_feetbumper()
+        self._aup.playFile('/home/nao/mp3/ouch_it_hurts.mp3')
+        self.sub_feetbumper()
 
     def sub_handshake(self):
         memory.subscribeToEvent('HandRightBackTouched', self._handle, 'onHandTouched')
@@ -66,27 +78,26 @@ class Kehaola(ALModule):
         memory.unsubscribeToEvent('HandRightLeftTouched', self._handle)
         memory.unsubscribeToEvent('HandRightRightTouched', self._handle)
 
-    def onHeadTouched(self, *_args):
-        self.unsub_head()
-        self._aup.playFile('/home/nao/mp3/kehaola.mp3')
-        self.sub_head()
-
-    def onBumperPressed(self, *_args):
-        self.unsub_feetbumper()
-        self._aup.playFile('/home/nao/mp3/ouch_it_hurts.mp3')
-        self.sub_feetbumper()
-
     def onHandTouched(self, *_args):
         self.unsub_handshake()
-        self._aup.playFile('/home/nao/mp3/shakedhands.mp3')
+        self._aup.playFile('/home/nao/mp3/shakehands.mp3')
         self.sub_handshake()
+
+    def sub_facerec(self):
+        memory.subscribeToEvent('FaceDetected', self._handle, 'onFaceDetected')
+
+    def unsub_facerec(self):
+        memory.unsubscribeToEvent('FaceDetected', self._handle, 'onFaceDetected')
+
+    def onFaceDetected(self, *_args):
+        self.tts.say("Hi, yo!")
 
 def main(ip, port):
 
-    broker = ALBroker("pythonBroker", "0.0.0.0", 9999, ip, port)
+    broker = ALBroker('pythonBroker', '0.0.0.0', 9999, ip, port)
 
     global memory
-    memory = ALProxy("ALMemory", ip, port)
+    memory = ALProxy('ALMemory', ip, port)
 
     global kehaola
     kehaola = Kehaola('kehaola', ip, port)
@@ -97,11 +108,11 @@ def main(ip, port):
     kehaola.unsub_all()
     broker.shutdown()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default='127.0.0.1',
+    parser.add_argument('--ip', type=str, default='127.0.0.1',
                         help="Robot ip address")
-    parser.add_argument("--port", type=int, default=9559,
+    parser.add_argument('--port', type=int, default=9559,
                         help="Robot port number")
 
     args = parser.parse_args()
