@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-This is a standalone Python file. It does not require any 3rd-party package other than Python NAOqi SDK.
-
 Please replace these things first:
 1. The default IP address and the default port number
-2. The hard-coded MP3 file names (or you manually upload the MP3 files with Nao's built-in FTP server.  
+2. The hard-coded MP3 file names (or you manually upload the MP3 files with Nao's built-in FTP server.
 '''
 
 __author__ = 'x1ang.li'
@@ -87,13 +85,15 @@ class Kehaola(ALModule):
         memory.subscribeToEvent('FaceDetected', self._handle, 'onFaceDetected')
 
     def unsub_facerec(self):
-        memory.unsubscribeToEvent('FaceDetected', self._handle, 'onFaceDetected')
+        memory.unsubscribeToEvent('FaceDetected', self._handle)
 
     def onFaceDetected(self, *_args):
-        self.tts.say("Hi, yo!")
+        self.unsub_facerec()
+        self._tts.say("Hi, yo!")
+        time.sleep(45)
+        self.sub_facerec()
 
 def main(ip, port):
-
     broker = ALBroker('pythonBroker', '0.0.0.0', 9999, ip, port)
 
     global memory
@@ -103,7 +103,7 @@ def main(ip, port):
     kehaola = Kehaola('kehaola', ip, port)
     kehaola.sub_all()
 
-    time.sleep(60)
+    time.sleep(600)
 
     kehaola.unsub_all()
     broker.shutdown()
