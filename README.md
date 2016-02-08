@@ -10,8 +10,14 @@ Before you start with your first line of code, you need to do these things first
 3. Install Nao's Python Naoqi SDK (https://community.aldebaran.com/en/resources/software/language/en-gb). Note: you need to set up an account on aldebaran.com, also you need to register at least one Nao with that account so as to download the SDK!
 4. (Optional) Setup one or more Python IDE on your computer
 
-## Usage
+## General Usage
 Download one Python file or clone the entire Git repo. Change the hard-coded IP address in the .py files. And execute the file.
+
+## Introduction (Module-by-module)
+
+* almotion_basic.py
+
+This one controls basic movements of Nao. Please note the information as output from motion.getSummary()
 
 ## Troubleshooting 
 
