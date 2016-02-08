@@ -15,7 +15,9 @@ Note: you need to set up an account on aldebaran.com, also you need to register 
 4. (Optional) Setup one or more Python IDE on your computer
 
 ## General Usage
-Download one Python file or clone the entire Git repo. Change the hard-coded IP address in the .py files. And execute the file.
+1. Download one Python file or clone the entire Git repo. 
+2. Change the hard-coded IP address in the .py files. 
+3. Run the file(s)
 
 ## Introduction (Module-by-module)
 
