@@ -3,8 +3,8 @@
 Nao ("now") is a programmable humanoid robot developed by Aldebaran Robotics. It supports programming based on its Python and C++ SDKs. Since Python has a much smoother deployment process, this repo is tied with Python. 
 
 ## Installation
-
 Before you start with your first line of code, you need to do these things first:
+
 1. Get a Nao robot, of course 
 2. Install Python 2.7 (https://www.python.org/downloads/release/python-2710/) . Note: only 32-bit version is supported by Nao's SDK, so even if you have a 64-bit CPU or OS, you still need to download the Python 2.7 X86 version!
 3. Install Nao's Python Naoqi SDK (https://community.aldebaran.com/en/resources/software/language/en-gb). 
